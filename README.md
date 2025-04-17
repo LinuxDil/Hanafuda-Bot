@@ -4,7 +4,7 @@
 This is a Node.js bot designed to automate grow actions across multiple accounts on the Hanafuda platform. It refreshes tokens, initiates and commits grow actions, and manages authentication tokens with built-in error handling.
 
 ---
-Join Our Channel At: https://t.me/airdropseeker_official
+Join Our Channel for more Airdrop At: https://t.me/airdropseeker_official
 
 ## Features
 
@@ -153,4 +153,4 @@ All wallets processed.
 - **Connection issues:** Verify that the RPC URL is reachable and valid.
 
 ## Author
-Bot created by: bang alex
+Bot created by: bang alex founder https://t.me/airdropwithmeh
