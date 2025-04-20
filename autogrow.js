@@ -37,7 +37,7 @@ function loadTokens() {
       process.exit(1);
     }
   } else {
-    printMessage('Token file not found, please initialize tokens.', 'error');
+    printMessage('Token file not found, please initialize tokens Join our channel for more information https://t.me/airdropseeker_official.', 'error');
     process.exit(1);
   }
 }
