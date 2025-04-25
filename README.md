@@ -1,7 +1,7 @@
 
 # Multi-Account Auto Grow Hanafuda Bot
 
-This is a Node.js bot designed to automate grow actions across multiple accounts on the Hanafuda platform. It refreshes tokens, initiates and commits grow actions, and manages authentication tokens with built-in error handling.
+This is a Node.js bot designed to automate grow actions across multiple accounts on the Hanafuda platform. It refreshes tokens, initiates and commits grow actions, and manages authentication tokens with built-in error handling. Hana Network Automation
 
 ---
 Join Our Channel for more Airdrop At: https://t.me/airdropseeker_official
