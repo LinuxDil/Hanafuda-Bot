@@ -258,7 +258,7 @@ function printMessage(message, type = 'info') {
 function printHeader() {
   const line = "=".repeat(50);
   const title = "Multi-Account Auto Grow Hanafuda";
-
+  const createdBy = "Created by LinuxDil";
   const totalWidth = 50;
   const titlePadding = Math.floor((totalWidth - title.length) / 2);
   const createdByPadding = Math.floor((totalWidth - createdBy.length) / 2);
