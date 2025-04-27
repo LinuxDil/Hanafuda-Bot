@@ -21,7 +21,7 @@ Join Our Channel for more Airdrop At: https://t.me/airdropseeker_official
 - **npm** (Node package manager)
 - Install dependencies with:
   ```bash
-  npm install axios chalk
+  npm install axios chalk@2
   ```
 
 ---
@@ -59,7 +59,7 @@ Join Our Channel for more Airdrop At: https://t.me/airdropseeker_official
 4. Run the bot:
 
     ```bash
-    node index.js
+    node autogrow.js or node autodraw.js
     ```
 
 ---
