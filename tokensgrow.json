@@ -1,0 +1,10 @@
+{
+  "refresh_token_1": {
+    "refreshToken": "your_refresh_token_1",
+    "authToken": "Bearer your_auth_token_1"
+  },
+  "refresh_token_2": {
+    "refreshToken": "your_refresh_token_2",
+    "authToken": "Bearer your_auth_token_2"
+  }
+}
