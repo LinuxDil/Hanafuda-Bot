@@ -2,7 +2,7 @@ const axios = require('axios');
 const chalk = require('chalk');
 const fs = require('fs');
 
-// Toggle for 'withAll': set to true for single execution, false for loop through growActionCount
+// Toggle for 'withAll': set to true for single execution, false for loop through growActionCount!
 const withAll = false; // Set to true for one-time execution, false for looping through growActionCount
 
 // File to store tokens
