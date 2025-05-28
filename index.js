@@ -116,7 +116,7 @@ async function syncTransaction(txHash) {
               syncEthereumTx(chainId: $chainId, txHash: $txHash)
             }`,
           variables: {
-            chainId: 10,  // Adjust based on your specific chain ID
+            chainId: 10,  // Optimism Mainnet
             txHash: txHash
           },
           operationName: "SyncEthereumTx"
@@ -124,15 +124,14 @@ async function syncTransaction(txHash) {
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': authToken  // Include the authToken in headers
+            'Authorization': authToken
           }
         }
       );
 
-      // Check if syncEthereumTx is true and break the loop if successful
       if (response.data && response.data.data && response.data.data.syncEthereumTx) {
         console.log(chalk.green(`Transaction ${txHash} successfully synced with backend.`));
-        break;  // Exit the retry loop if sync is successful
+        break;
       } else {
         throw new Error(`Sync response is null or unsuccessful.`);
       }
@@ -140,45 +139,43 @@ async function syncTransaction(txHash) {
     } catch (error) {
       console.error(`Attempt ${attempt} - Error syncing transaction ${txHash}:`, error.message);
 
-      // Refresh token on the third attempt
       if (attempt === 3) {
         console.log(chalk.yellow('Attempting to refresh token on the third try...'));
         
-        const refreshedToken = await refreshTokenHandler();  // Refresh token
+        const refreshedToken = await refreshTokenHandler();
         if (refreshedToken) {
-          authToken = refreshedToken;  // Update local authToken
+          authToken = refreshedToken;
           console.log(chalk.green('Token refreshed successfully. Retrying request with new token...'));
-          attempt--;  // Decrement attempt to retry with the refreshed token
-          continue; // Retry with the refreshed token immediately
+          attempt--;
+          continue;
         } else {
           console.error(chalk.red('Token refresh failed. Cannot retry further.'));
           break;
         }
       }
 
-      // If not the last attempt, retry after a delay
       console.log(`Retrying in ${retryDelay / 1000} seconds...`);
-      await new Promise(resolve => setTimeout(resolve, retryDelay));  // Wait before retrying
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
     }
   }
 }
 
-// Waits until the transaction fee is below the defined threshold in Ether
+// Wait until transaction fee is below defined threshold
 async function waitForLowerFee(gasLimit) {
   let gasPrice, txnFeeInEther;
   do {
     gasPrice = await web3.eth.getGasPrice();
-    const txnFee = gasPrice * gasLimit;  // Transaction fee in Wei
-    txnFeeInEther = web3.utils.fromWei(txnFee.toString(), 'ether');  // Convert txn fee to Ether
+    const txnFee = gasPrice * gasLimit;
+    txnFeeInEther = web3.utils.fromWei(txnFee.toString(), 'ether');
 
     if (parseFloat(txnFeeInEther) > FEE_THRESHOLD) {
       console.log(`Current transaction fee: ${txnFeeInEther} ETH, waiting...`);
-      await new Promise(resolve => setTimeout(resolve, 5000));  // Wait 5 seconds before checking again
+      await new Promise(resolve => setTimeout(resolve, 5000));
     }
   } while (parseFloat(txnFeeInEther) > FEE_THRESHOLD);
 
   console.log(`Acceptable transaction fee detected: ${txnFeeInEther} ETH`);
-  return gasPrice;  // Return acceptable gas price
+  return gasPrice;
 }
 
 // Execute transactions for all wallets
@@ -193,7 +190,7 @@ async function executeTransactionsForAllWallets(privateKeys, numTx, amountInEthe
   console.log('All wallets processed.');
 }
 
-// Function to execute transactions for a single wallet
+// Execute transactions for one wallet
 async function executeTransactions(privateKey, numTx, amountInEther) {
   try {
     const amountInWei = web3.utils.toWei(amountInEther, 'ether');
@@ -205,8 +202,6 @@ async function executeTransactions(privateKey, numTx, amountInEther) {
       try {
         const currentNonce = await web3.eth.getTransactionCount(fromAddress, 'pending');
         const gasLimit = await contract.methods.depositETH().estimateGas({ from: fromAddress, value: amountInWei });
-
-        // Wait until transaction fee is below the threshold before proceeding
         const gasPrice = await waitForLowerFee(gasLimit);
 
         const tx = {
@@ -223,8 +218,6 @@ async function executeTransactions(privateKey, numTx, amountInEther) {
         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 
         console.log(`Transaction ${i + 1} successful with hash: ${receipt.transactionHash}`);
-
-        // Sync transaction with backend
         await syncTransaction(receipt.transactionHash);
 
       } catch (txError) {
@@ -241,7 +234,26 @@ async function executeTransactions(privateKey, numTx, amountInEther) {
   }
 }
 
-// Main function and other code remains the same
+// Header for display
+function printHeader() {
+  const line = "=".repeat(50);
+  const title = "Auto Deposit Hanafuda";
+  const createdBy = "Created by Bg WIN"; // ✅ Diperbaiki
+
+  const totalWidth = 50;
+  const titlePadding = Math.floor((totalWidth - title.length) / 2);
+  const createdByPadding = Math.floor((totalWidth - createdBy.length) / 2);
+
+  const centeredTitle = title.padStart(titlePadding + title.length).padEnd(totalWidth);
+  const centeredCreatedBy = createdBy.padStart(createdByPadding + createdBy.length).padEnd(totalWidth);
+
+  console.log(chalk.cyan.bold(line));
+  console.log(chalk.cyan.bold(centeredTitle));
+  console.log(chalk.green(centeredCreatedBy));
+  console.log(chalk.cyan.bold(line));
+}
+
+// Main entry
 async function main() {
   try {
     const privateKeys = readPrivateKeys();
@@ -285,24 +297,7 @@ async function main() {
   }
 }
 
-// Header for display
-function printHeader() {
-  const line = "=".repeat(50);
-  const title = "Auto Deposit Hanafuda";
-
-  const totalWidth = 50;
-  const titlePadding = Math.floor((totalWidth - title.length) / 2);
-  const createdByPadding = Math.floor((totalWidth - createdBy.length) / 2);
-
-  const centeredTitle = title.padStart(titlePadding + title.length).padEnd(totalWidth);
-  const centeredCreatedBy = createdBy.padStart(createdByPadding + createdBy.length).padEnd(totalWidth);
-
-  console.log(chalk.cyan.bold(line));
-  console.log(chalk.cyan.bold(centeredTitle));
-  console.log(chalk.green(centeredCreatedBy));
-  console.log(chalk.cyan.bold(line));
-}
-
-// Run the main function
+// Run the script
 printHeader();
 main();
+      
