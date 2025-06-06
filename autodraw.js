@@ -7,7 +7,7 @@ const ACCOUNT_FILE = 'tokensgrow.json';
 const REQUEST_URL = 'https://hanafuda-backend-app-520478841386.us-central1.run.app/graphql';
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36';
 
-// Function to display messages
+// Function to display messages gas
 function printMessage(message, type = 'info') {
   const timestamp = new Date().toISOString();
   if (type === 'success') {
