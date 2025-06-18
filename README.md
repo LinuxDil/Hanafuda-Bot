@@ -32,7 +32,7 @@ Join Our Channel for more Airdrop At: https://t.me/airdropseeker_official
 
     ```bash
     git clone https://github.com/LinuxDil/Hanafuda-Bot.git
-    cd hanafuda
+    cd Hanafuda-Bot
     ```
 
 2. Install required dependencies:
